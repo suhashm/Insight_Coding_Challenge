@@ -6,26 +6,37 @@ The code for both the [challenges](https://github.com/InsightDataScience/cc-exam
 **Python Version:** 2.7.6
 **OS:** Mac OSX, Ubuntu 14.04
 
+
+
 #### **Contents of run.sh** (Primary Submission)
 - Challenge 1 solution: **_tweet_word_count.py_**
 - Challenge 2 Solution: **_tweet_rolling_median_bisect.py_**
 
-Both the challenges are also solved using  **Apache Spark** with **PySpark**. A single IPython notebook named **PySpark_Insight_Data_Engineering_Challenge.ipynb** with PySpark implementation  for both the challenges is included in the src directory.
+#### **Steps to run:** `sh run.sh or ./run.sh`
+Both the challenges are also solved using  **Apache Spark** with **PySpark**. A single IPython notebook named [**PySpark_Insight_Data_Engineering_Challenge.ipynb**](http://nbviewer.ipython.org/github/suhashm/Insight_Coding_Challenge/blob/master/src/PySpark_Insight_Data_Engineering_Challenge.ipynb) with PySpark implementation  for both the challenges is included in the src directory.
 
-The code is appropriately commented and the **PEP08**[^pep08] coding style for python has been followed.
-
-----------
-
-
-[TOC]
-
+The code is appropriately commented and the [**PEP08**<sup>1</sup>](#references) coding style for python has been followed.
 
 ----------
 
 
-Challenge 1: Tweet Word Count
---------------------------------------
+###**Table of Contents**
 
+- [Insight Data Engineering Coding Challenge](#insight-data-engineering-coding-challenge )
+	- [Challenge 1: Tweet Word Count](#challenge-1-tweet-word-count)
+	- [Challenge 2: Rolling median of tweets](#challenge-2-rolling-median-of-tweets)
+				- [1. Sliding window approach](#1-sliding-window-approach)
+				- [2. Heaps](#2-heaps)
+				- [3. Using numpy](#3-using-numpy)
+			- [Evaluation](#evaluation)
+			- [Conclusion](#conclusion)
+	- [Apache Spark - PySpark implementation](#apache-spark-pyspark-implementation)
+	- [References](#references)
+
+
+----------
+
+##Challenge 1: Tweet Word Count
 #### <i class="icon-pencil"></i> Implementation Details
 
 For each of the tweets from input tweet file, frequency of the word is calculated using a **python dictionary (defaultdict)** as the data structure.
@@ -37,18 +48,17 @@ python src/tweet_word_count.py tweet_input/tweets.txt tweet_output/ft1.txt
 ```
 > **Note:**
 > The use of a dictionary provides accurate results to calculate the cardinality of the words. Though, the look up time is very fast **O(1)**,  the size of the dictionary will be equal to that of number of unique words in all the tweets.
-> In order to scale the cardinality process, I have also explored various probabilistic models like **Linear Probabilistic Counter,  Count-Min Sketch[^cms], HyperLogLog(HLL)**[^hll]. However, HLL provides only the overall cardinality of the unique words, but we need to extract word frequency for all the words in the tweet.
->**Scalable Bloom filters** [^bloomfilter] are another promising option, which use very less memory and ensures zero false negatives. However, bloom filters are mainly used to check the membership of an object. Since our use case is to find out the cardinality, I proceeded with using the dictionary approach.
+> In order to scale the cardinality process, I have also explored various probabilistic models like **Linear Probabilistic Counter,  [Count-Min Sketch <sup>2</sup>](#references), [HyperLogLog(HLL) <sup>3</sup>](#references)**. However, HLL provides only the overall cardinality of the unique words, but we need to extract word frequency for all the words in the tweet.
+>[**Scalable Bloom filters** <sup>4</sup>](#references) are another promising option, which use very less memory and ensures zero false negatives. However, bloom filters are mainly used to check the membership of an object. Since our use case is to find out the cardinality, I proceeded with using the dictionary approach.
 
 ----------
 
+## Challenge 2: Rolling median of tweets
 
-Challenge 2: Rolling median of tweets
-----------------------------------------------
 #### <i class="icon-pencil"></i> Implementation Details
 I have implemented 3 different solutions to compute rolling median:
 
-##### **1. Sliding window approach**
+#####1. **Sliding window approach**
 *(submitted solution for **run.sh**)*
 
 - With deque and bisect library
@@ -68,7 +78,7 @@ python src/tweet_rolling_median_bisect.py tweet_input/tweets.txt tweet_output/ft
 
 
 > **Note:**
-> The program is inspired by **"Efficient Algorithm for computing a Running Median"** [^^sliding_window] research paper.
+> The program is inspired by [**"Efficient Algorithm for computing a Running Median"** <sup>5</sup>](#references) research paper.
 
 
 
@@ -109,11 +119,11 @@ python src/tweet_rolling_median_numpy.py tweet_input/tweets.txt tweet_output/ft2
 
 The time taken to complete the calculation of rolling median for each of the approaches is shown below:  _(Mac OSX, 8 GB RAM, Dual core - i3)_
 
-| Approach   | Time taken |
-| :------ | - | :---: |
-| Sliding Window |  2.7 seconds|
-| numpy    | 100.4 seconds   |
-| Heaps     | 181 seconds    |
+| Approach  | Time taken |
+| ------------- | ------------- |
+| Sliding Window  | 2.7 seconds  |
+| numpy  | 100.4 seconds  |
+| Heaps  | 181 seconds  |
 
 #### Conclusion
 From the above evaluation, it is clear that  the **Sliding window approach** using deque and bisect outperforms both numpy and heap implementations.
@@ -132,16 +142,18 @@ Both the challenges have also been solved using PySpark as an alternate implemen
 
 - Challenge 2 is solved using the above mentioned Heap approach. In this approach, the transfer of variables from driver program to worker nodes are reduced using **broadcast variables.**
 
-**File:** PySpark_Insight_Data_Engineering_Challenge.ipynb
+**File:** [PySpark_Insight_Data_Engineering_Challenge.ipynb](http://nbviewer.ipython.org/github/suhashm/Insight_Coding_Challenge/blob/master/src/PySpark_Insight_Data_Engineering_Challenge.ipynb)
+
+
 
 References
 -------------
-  [^pep08]: [PEP08](https://www.python.org/dev/peps/pep-0008/) gives coding conventions for the Python code comprising the standard library in the main Python distribution.
+1. [PEP08](https://www.python.org/dev/peps/pep-0008/) gives coding conventions for the Python code comprising the standard library in the main Python distribution.
 
-[^cms]:[Cormode, Graham, and S. Muthukrishnan. "An improved data stream summary: the count-min sketch and its applications." Journal of Algorithms 55.1 (2005): 58-75.](http://dimacs.rutgers.edu/~graham/pubs/papers/cm-full.pdf)
+2. [Cormode, Graham, and S. Muthukrishnan. "An improved data stream summary: the count-min sketch and its applications." Journal of Algorithms 55.1 (2005): 58-75.](http://dimacs.rutgers.edu/~graham/pubs/papers/cm-full.pdf)
 
-  [^hll]: [Flajolet, Philippe, et al. "HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm." DMTCS Proceedings 1 (2008).](http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf)
+3. [Flajolet, Philippe, et al. "HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm." DMTCS Proceedings 1 (2008).](http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf)
 
-[^bloomfilter]:[Almeida, Paulo Sérgio, et al. "Scalable bloom filters." Information Processing Letters 101.6 (2007): 255-261.](http://gsd.di.uminho.pt/members/cbm/ps/dbloom.pdf)
+4. [Almeida, Paulo Sérgio, et al. "Scalable bloom filters." Information Processing Letters 101.6 (2007): 255-261.](http://gsd.di.uminho.pt/members/cbm/ps/dbloom.pdf)
 
-[^^sliding_window]:[Mohanty, Soumya D. Efficient Algorithm for computing a Running Median. T030168-00-D. http://www. ligo. caltech. edu/docs, 2003.](https://dcc.ligo.org/public/0027/T030168/000/T030168-00.pdf)
+5. [Mohanty, Soumya D. Efficient Algorithm for computing a Running Median. T030168-00-D. http://www. ligo. caltech. edu/docs, 2003.](https://dcc.ligo.org/public/0027/T030168/000/T030168-00.pdf)

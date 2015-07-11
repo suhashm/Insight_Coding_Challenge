@@ -25,11 +25,12 @@ The code is appropriately commented and the [**PEP08**<sup>1</sup>](#references)
 - [Insight Data Engineering Coding Challenge](#insight-data-engineering-coding-challenge )
 	- [Challenge 1: Tweet Word Count](#challenge-1-tweet-word-count)
 	- [Challenge 2: Rolling median of tweets](#challenge-2-rolling-median-of-tweets)
-				- [1. Sliding window approach](#1-sliding-window-approach)
-				- [2. Heaps](#2-heaps)
-				- [3. Using numpy](#3-using-numpy)
-			- [Evaluation](#evaluation)
-			- [Conclusion](#conclusion)
+		- [Approaches](#challenge-2-rolling-median-of-tweets)
+			- [1. Sliding window approach](#1-sliding-window-approach)
+			- [2. Heaps](#2-heaps)
+			- [3. Using numpy](#3-using-numpy)
+		- [Evaluation](#evaluation)
+		- [Conclusion](#conclusion)
 	- [Apache Spark - PySpark implementation](#apache-spark-pyspark-implementation)
 	- [References](#references)
 
@@ -117,7 +118,7 @@ python src/tweet_rolling_median_numpy.py tweet_input/tweets.txt tweet_output/ft2
 ```
 #### Evaluation
 
-The time taken to complete the calculation of rolling median for each of the approaches is shown below:  _(Mac OSX, 8 GB RAM, Dual core - i3)_
+The time taken to complete the calculation of rolling median for **120K tweets** for each of the approaches is shown below:  _(Mac OSX, 8 GB RAM, Dual core - i3)_
 
 | Approach  | Time taken |
 | ------------- | ------------- |
@@ -133,7 +134,7 @@ Hence,  the Sliding window approach can be considered as a scalable solution for
 ----------
 
 
-Apache Spark - PySpark implementation
+Apache Spark: PySpark implementation
 -----------------------------------------------
 
 Both the challenges have also been solved using PySpark as an alternate implementation.

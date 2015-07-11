@@ -134,8 +134,8 @@ Hence,  the Sliding window approach can be considered as a scalable solution for
 ----------
 
 
-Apache Spark: PySpark implementation
------------------------------------------------
+## Apache Spark: PySpark implementation
+
 
 Both the challenges have also been solved using PySpark as an alternate implementation.
 
